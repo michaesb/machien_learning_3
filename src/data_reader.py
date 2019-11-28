@@ -52,3 +52,6 @@ y = df.loc[:, df.columns == 'Class'].values.ravel()
 #### StandardScaler is more useful for classification, and Normalizer is more useful for regression.
 standard_scaler = StandardScaler()
 X = standard_scaler.fit_transform(X)
+
+
+### Do undersampling to fix imbalanced class
