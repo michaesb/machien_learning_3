@@ -6,9 +6,13 @@ import numpy as np
 import os
 
 path = os.path.dirname(os.path.realpath(__file__))
-file = path + "/../data/creditcard.csv"
+file1 = path + "/../data/creditcard_part1.csv"
+file2 = path + "/../data/creditcard_part2.csv"
 
-df = pd.read_csv(file)
+df1 = pd.read_csv(file1)
+df2 = pd.read_csv(file2)
+df  = pd.concat((df1, df2), ignore_index=True)
+
 
 print(f"Indices: {df.index}")
 print(f"Header: {df.columns.values}\n")
