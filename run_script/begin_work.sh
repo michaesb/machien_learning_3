@@ -1,3 +1,3 @@
 #!/bin/bash
-xdg-open Project3.pdf
+gio open Project3.pdf
 atom .

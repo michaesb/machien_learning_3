@@ -39,7 +39,7 @@ fraudulent = class_counts[1]
 non_fraudulent = class_counts[0]
 print(f"Fraudulent: {fraudulent}")
 print(f"Non-Fraudulent: {non_fraudulent}")
-print(f"Ratio: {(fraudulent/non_fraudulent)*100:.3f}%")
+print(f"Ratio: {(fraudulent/non_fraudulent)*100:.3f}%\n")
 
 plt.bar(class_counts.index, [non_fraudulent, fraudulent])
 plt.xticks(class_counts.index, ('Non-fraudulent','Fraudulent'))
@@ -62,3 +62,43 @@ X = standard_scaler.fit_transform(X)
 
 
 ### Do undersampling to fix imbalanced class
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+### Train test split
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=4)
+
+
+### Logistic Regression
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, recall_score, precision_score
+
+logreg = LogisticRegression(random_state=4,
+                            solver='lbfgs',
+                            multi_class='multinomial',
+                            max_iter=1000) 
+
+
+from sklearn.model_selection import GridSearchCV
+param_grid= {"C":np.logspace(-3,3,7), "penalty":["l2"]}
+logreg_grid = GridSearchCV(logreg, param_grid, cv=5)
+# logreg.fit(X_train, y_train)
+logreg_grid.fit(X_train, y_train)
+
+# prediction = logreg.predict(X_test)
+prediction = logreg_grid.predict(X_test)
+
+acc = accuracy_score(y_test, prediction)
+print(f"Accuracy Score:  {acc:.4f}")
+precision = precision_score(y_test, prediction)
+print(f"Precision Score: {precision:.4f}. What percentage of the predicted frauds were frauds?" )
+recall = recall_score(y_test, prediction)
+print(f"Recall Score:    {recall:.4f}. What percentage of the actual frauds were predicted?")
+>>>>>>> 22ab9fbd6971bb8f0530fe614b1e044c1cb277a6

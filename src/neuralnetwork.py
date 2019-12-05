@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scikitplot as skplt
 from scipy.integrate import simps
-
 import time
 import sklearn.neural_network
 import sklearn.metrics
