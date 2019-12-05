@@ -35,19 +35,36 @@ plt.show()
 exit()
 """
 class_counts = df.Class.value_counts()
-fraudulent = class_counts[1]
-non_fraudulent = class_counts[0]
-print(f"Fraudulent: {fraudulent}")
-print(f"Non-Fraudulent: {non_fraudulent}")
-print(f"Ratio: {(fraudulent/non_fraudulent)*100:.3f}%\n")
+num_fraudulent = class_counts[1]
+num_non_fraudulent = class_counts[0]
+print(f"Fraudulent: {num_fraudulent}")
+print(f"Non-Fraudulent: {num_non_fraudulent}")
+print(f"Ratio: {(num_fraudulent/num_non_fraudulent)*100:.3f}%\n")
 
-plt.bar(class_counts.index, [non_fraudulent, fraudulent])
-plt.xticks(class_counts.index, ('Non-fraudulent','Fraudulent'))
+plt.bar(class_counts.index, [num_non_fraudulent, num_fraudulent])
+plt.xticks(class_counts.index, ('Non-num_fraudulent','Fraudulent'))
 plt.show()
 
 
 sb.heatmap( data=df.corr(), cmap="viridis", annot=False)
 plt.show()
+
+
+### Undersampling
+indices = np.arange(0, num_fraudulent)
+
+frauds_df = df.loc[ df["Class"] == 1 ]
+non_frauds_df = df.loc[ df["Class"] == 0 ]
+
+indices = np.arange(0, num_non_fraudulent)
+indices = np.random.choice(indices, num_fraudulent, replace=False)
+
+#non_frauds_df = non_frauds_df.loc[ indices ]
+non_frauds_df = non_frauds_df.reindex( indices )
+
+under_df  = pd.concat((frauds_df, non_frauds_df), ignore_index=True)
+df = under_df.sample(frac=1).reset_index(drop=True)
+
 
 
 
@@ -62,12 +79,6 @@ X = standard_scaler.fit_transform(X)
 
 
 ### Do undersampling to fix imbalanced class
-<<<<<<< HEAD
-=======
-
-
-
-
 
 
 
@@ -83,7 +94,7 @@ from sklearn.metrics import accuracy_score, recall_score, precision_score
 logreg = LogisticRegression(random_state=4,
                             solver='lbfgs',
                             multi_class='multinomial',
-                            max_iter=1000) 
+                            max_iter=1000)
 
 
 from sklearn.model_selection import GridSearchCV
