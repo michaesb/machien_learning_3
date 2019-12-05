@@ -1,8 +1,10 @@
-from data_process import retrieve_data
-import numpy as np
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, recall_score, precision_score
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
+from data_process import retrieve_data
+import matplotlib.pyplot as plt
+import scikitplot as skplt
+import numpy as np
 
 X_train, X_test, y_train, y_test = retrieve_data( undersampling=True )
 
@@ -27,3 +29,6 @@ precision = precision_score(y_test, prediction)
 print(f"Precision Score: {precision:.4f}. What percentage of the predicted frauds were frauds?" )
 recall = recall_score(y_test, prediction)
 print(f"Recall Score:    {recall:.4f}. What percentage of the actual frauds were predicted?")
+
+skplt.metrics.plot_confusion_matrix(y_test, prediction, normalize=True)
+plt.show()
