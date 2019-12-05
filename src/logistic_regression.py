@@ -4,7 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, recall_score, precision_score
 from sklearn.model_selection import GridSearchCV
 
-X_train, X_test, y_train, y_test = retrieve_data()
+X_train, X_test, y_train, y_test = retrieve_data( undersampling=True )
 
 ### Logistic Regression
 logreg = LogisticRegression(random_state=4,

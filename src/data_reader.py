@@ -51,19 +51,19 @@ plt.show()
 
 
 ### Undersampling
-indices = np.arange(0, num_fraudulent)
+# indices = np.arange(0, num_fraudulent)
 
-frauds_df = df.loc[ df["Class"] == 1 ]
-non_frauds_df = df.loc[ df["Class"] == 0 ]
+# frauds_df = df.loc[ df["Class"] == 1 ]
+# non_frauds_df = df.loc[ df["Class"] == 0 ]
 
-indices = np.arange(0, num_non_fraudulent)
-indices = np.random.choice(indices, num_fraudulent, replace=False)
+# indices = np.arange(0, num_non_fraudulent)
+# indices = np.random.choice(indices, num_fraudulent, replace=False)
 
-#non_frauds_df = non_frauds_df.loc[ indices ]
-non_frauds_df = non_frauds_df.reindex( indices )
+# #non_frauds_df = non_frauds_df.loc[ indices ]
+# non_frauds_df = non_frauds_df.reindex( indices )
 
-under_df  = pd.concat((frauds_df, non_frauds_df), ignore_index=True)
-df = under_df.sample(frac=1).reset_index(drop=True)
+# under_df  = pd.concat((frauds_df, non_frauds_df), ignore_index=True)
+# df = under_df.sample(frac=1).reset_index(drop=True)
 
 ####
 
@@ -77,6 +77,17 @@ y = df.loc[:, df.columns == 'Class'].values.ravel()
 standard_scaler = StandardScaler()
 X = standard_scaler.fit_transform(X)
 
+indices_nonfraud = np.where(y==0)[0]
+indices_fraud = np.where(y==1)[0]
+
+np.random.shuffle(indices_nonfraud)
+indices_nonfraud_under = indices_nonfraud[:num_fraudulent]
+indices_under = np.concatenate( (indices_fraud, indices_nonfraud_under) )
+np.random.shuffle(indices_under)
+
+
+X = X[indices_under]
+y = y[indices_under]
 
 
 
