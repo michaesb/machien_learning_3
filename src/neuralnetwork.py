@@ -16,7 +16,7 @@ runs the classifier class with data from the data package
 
 def neuralnet_clf_sklearn():
 
-    X_train, X_test, y_train, y_test = retrieve_data(undersampling = 0)
+    X_train, X_test, y_train, y_test = retrieve_data(undersampling = 1)
 
 
     learning_rate = np.linspace(0.01, 0.001, 11)
@@ -35,7 +35,7 @@ def neuralnet_clf_sklearn():
                                 learning_rate_init = learning_rate[i],
                                 max_iter = 1000,
                                 tol = 1e-10,
-                                verbose = True,
+                                verbose = False,
                                 )
         clf = clf.fit(X_train, y_train.ravel())
         predict = clf.predict(X_test)
