@@ -1,0 +1,40 @@
+from sklearn.preprocessing.data import StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sb
+import pandas as pd
+import numpy as np
+import os
+def retrieve_data():
+    path = os.path.dirname(os.path.realpath(__file__))
+    file1 = path + "/../data/creditcard_part1.csv"
+    file2 = path + "/../data/creditcard_part2.csv"
+
+    df1 = pd.read_csv(file1)
+    df2 = pd.read_csv(file2)
+    df  = pd.concat((df1, df2), ignore_index=True)
+
+
+    pd.set_option("precision", 3)
+
+    class_counts = df.Class.value_counts()
+    fraudulent = class_counts[1]
+    non_fraudulent = class_counts[0]
+
+    ## There are no categories in the dataset, so no need to do one-hot encoding.
+    X = df.loc[:, df.columns != 'Class'].values
+    y = df.loc[:, df.columns == 'Class'].values.ravel()
+
+
+    #### StandardScaler is more useful for classification, and Normalizer is more useful for regression.
+    standard_scaler = StandardScaler()
+    X = standard_scaler.fit_transform(X)
+    return X,y
+
+    ### Do undersampling to fix imbalanced class
+if __name__ == '__main__':
+
+    X,y =retrieve_data()
+    print ("ohh, fuck" )
+    print (X)
+    print ("I can't believe done this")
+    print (np.sum(y)/len(y)*100)

@@ -11,8 +11,7 @@ file2 = path + "/../data/creditcard_part2.csv"
 
 df1 = pd.read_csv(file1)
 df2 = pd.read_csv(file2)
-df  = pd.concat((df1, df2), ignore_index=True)
-
+df = pd.concat((df1, df2), ignore_index=True)
 
 print(f"Indices: {df.index}")
 print(f"Header: {df.columns.values}\n")
@@ -22,15 +21,19 @@ print(df.info(),"\n")
 pd.set_option("precision", 3)
 print( f" {df.loc[:, ['Time', 'Amount']].describe()}\n" )
 
-### Amount has an average credit card transaction around 88 dollars 
+### Amount has an average credit card transaction around 88 dollars
 ### And the biggest transaction of 25691.160 dollarsssssss........
+
+"""
+sb.distplot(df["Amount"])
+plt.show()
+
 
 sb.distplot(df["Time"])
 plt.show()
 
-sb.distplot(df["Amount"])
-plt.show()
-
+exit()
+"""
 class_counts = df.Class.value_counts()
 fraudulent = class_counts[1]
 non_fraudulent = class_counts[0]
