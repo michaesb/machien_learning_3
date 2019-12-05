@@ -53,7 +53,6 @@ def retrieve_data( undersampling=False ):
 if __name__ == '__main__':
 
     X,y = retrieve_data()
-    print ("ohh, fuck" )
     print (X)
     print ("I can't believe you've done this")
     print (np.sum(y)/len(y)*100)

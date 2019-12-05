@@ -2,6 +2,7 @@ from data_process import retrieve_data
 import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, recall_score, precision_score
+from sklearn.model_selection import GridSearchCV
 
 X_train, X_test, y_train, y_test = retrieve_data()
 
@@ -12,7 +13,6 @@ logreg = LogisticRegression(random_state=4,
                             max_iter=1000)
 
 
-from sklearn.model_selection import GridSearchCV
 param_grid= {"C":np.logspace(-3,3,7), "penalty":["l2"]}
 logreg_grid = GridSearchCV(logreg, param_grid, cv=5)
 # logreg.fit(X_train, y_train)
