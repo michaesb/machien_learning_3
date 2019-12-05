@@ -2,9 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scikitplot as skplt
-from scipy.integrate import simps
 import time
-import sklearn.neural_network
+from sklearn import tree
 import sklearn.metrics
 from data_process import retrieve_data
 
@@ -15,10 +14,11 @@ runs the classifier class with data from the data package
 def neuralnet_clf_sklearn():
 
     X_train, X_test, y_train, y_test = retrieve_data()
+
     # print ("ohh, fuck" )
-    # print (X_train)
+    # print (X)
     # print ("I can't believe done this")
-    # print (np.sum(y_train)/len(y_train)*100)
+    # print (np.sum(y)/len(y)*100)
 
     learning_rate = np.linspace(0.01, 0.001, 11)
     n = len(learning_rate)
@@ -27,14 +27,7 @@ def neuralnet_clf_sklearn():
     for i in range(len(learning_rate)):
         time1 = time.time()
         print(int(100*i/len(learning_rate)), "%")
-        clf = sklearn.neural_network.MLPClassifier(
-                                hidden_layer_sizes = (1),
-                                learning_rate = "adaptive",
-                                learning_rate_init = learning_rate[i],
-                                max_iter = 1000,
-                                tol = 1e-10,
-                                verbose = True,
-                                )
+        clf = tree.DecisionTreeClassifier(random_state = 0)
         clf = clf.fit(X_train, y_train.ravel())
         predict = clf.predict(X_test)
         accuracy_score[i] = clf.score(X_test,y_test.ravel())

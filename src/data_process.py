@@ -4,6 +4,7 @@ import seaborn as sb
 import pandas as pd
 import numpy as np
 import os
+from sklearn.model_selection import train_test_split
 def retrieve_data():
     path = os.path.dirname(os.path.realpath(__file__))
     file1 = path + "/../data/creditcard_part1.csv"
@@ -28,7 +29,8 @@ def retrieve_data():
     #### StandardScaler is more useful for classification, and Normalizer is more useful for regression.
     standard_scaler = StandardScaler()
     X = standard_scaler.fit_transform(X)
-    return X,y
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=4)
+    return X_train,X_test,y_train,y_test
 
     ### Do undersampling to fix imbalanced class
 if __name__ == '__main__':
