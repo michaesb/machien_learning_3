@@ -15,8 +15,8 @@ runs the classifier class with data from the data package
 """
 
 def neuralnet_clf_sklearn():
-
-    X_train, X_test, y_train, y_test = retrieve_data(undersampling = 1)
+    ratio_ = 0.25
+    X_train, X_test, y_train, y_test = retrieve_data(undersampling = True, ratio= ratio_)
 
 
     learning_rate = np.linspace(0.01, 0.001, 11)
@@ -25,12 +25,11 @@ def neuralnet_clf_sklearn():
     acc_score = np.zeros(n)
     rec_score = np.zeros(n)
     prec_score = np.zeros(n)
-
     for i in range(len(learning_rate)):
         time1 = time.time()
         print(int(100*i/len(learning_rate)), "%")
         clf = sklearn.neural_network.MLPClassifier(
-                                hidden_layer_sizes = (1),
+                                hidden_layer_sizes = (10,10),
                                 learning_rate = "adaptive",
                                 learning_rate_init = learning_rate[i],
                                 max_iter = 1000,
@@ -51,10 +50,10 @@ def neuralnet_clf_sklearn():
     plt.ylabel("Accuracy score")
     plt.title("Scikit-Learn NeuralNet score for different learning rates")
     plt.show()
-    print("ohh, fuck ")
-    print(acc_score)
-    print(prec_score)
-    print(rec_score)
-    print ("I can't believe you have done this")
+    print("ratio: ", ratio)
+    print("accuracy_score",acc_score)
+    print("precision_score",prec_score)
+    print("rec_score",rec_score)
+
 
 neuralnet_clf_sklearn()

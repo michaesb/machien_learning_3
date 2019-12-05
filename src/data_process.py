@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-def retrieve_data( undersampling=False ):
+def retrieve_data( undersampling=False, ratio = 1):
     path = os.path.dirname(os.path.realpath(__file__))
     file1 = path + "/../data/creditcard_part1.csv"
     file2 = path + "/../data/creditcard_part2.csv"
@@ -35,8 +35,10 @@ def retrieve_data( undersampling=False ):
         indices_nonfraud = np.where(y==0)[0]
         indices_fraud = np.where(y==1)[0]
 
+        multiplier = int(1.0/ratio)
+
         np.random.shuffle(indices_nonfraud)
-        indices_nonfraud_under = indices_nonfraud[:num_fraudulent]
+        indices_nonfraud_under = indices_nonfraud[:multiplier*num_fraudulent]
         indices_under = np.concatenate( (indices_fraud, indices_nonfraud_under) )
         np.random.shuffle(indices_under)
 
