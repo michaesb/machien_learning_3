@@ -20,24 +20,6 @@ def retrieve_data( undersampling=False ):
     num_non_fraudulent = class_counts[0]
 
 
-    ### Undersampling
-    if undersampling:
-        indices = np.arange(0, num_fraudulent)
-
-        frauds_df = df.loc[ df["Class"] == 1 ]
-        non_frauds_df = df.loc[ df["Class"] == 0 ]
-
-        indices = np.arange(0, num_non_fraudulent)
-        indices = np.random.choice(indices, num_fraudulent, replace=False)
-
-        #non_frauds_df = non_frauds_df.loc[ indices ]
-        non_frauds_df = non_frauds_df.reindex( indices )
-
-        under_df  = pd.concat((frauds_df, non_frauds_df), ignore_index=True)
-        df = under_df.sample(frac=1).reset_index(drop=True)
-    ####
-
-
     ## There are no categories in the dataset, so no need to do one-hot encoding.
     X = df.loc[:, df.columns != 'Class'].values
     y = df.loc[:, df.columns == 'Class'].values.ravel()
@@ -46,10 +28,25 @@ def retrieve_data( undersampling=False ):
     #### StandardScaler is more useful for classification, and Normalizer is more useful for regression.
     standard_scaler = StandardScaler()
     X = standard_scaler.fit_transform(X)
+
+
+    ### Do undersampling to fix imbalanced class
+    if undersampling:
+        indices_nonfraud = np.where(y==0)[0]
+        indices_fraud = np.where(y==1)[0]
+
+        np.random.shuffle(indices_nonfraud)
+        indices_nonfraud_under = indices_nonfraud[:num_fraudulent]
+        indices_under = np.concatenate( (indices_fraud, indices_nonfraud_under) )
+        np.random.shuffle(indices_under)
+
+        X = X[indices_under]
+        y = y[indices_under]
+    ####
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=4)
     return X_train,X_test,y_train,y_test
 
-    ### Do undersampling to fix imbalanced class
 if __name__ == '__main__':
 
     X,y = retrieve_data()
