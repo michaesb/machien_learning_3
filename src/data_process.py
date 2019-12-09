@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
+
 def retrieve_data( undersampling=False, ratio = 1):
     path = os.path.dirname(os.path.realpath(__file__))
     file1 = path + "/../data/creditcard_part1.csv"
@@ -32,6 +33,9 @@ def retrieve_data( undersampling=False, ratio = 1):
 
     ### Do undersampling to fix imbalanced class
     if undersampling:
+        if ratio > 1:
+            raise ValueError("ratio cannot be bigger than one")
+
         indices_nonfraud = np.where(y==0)[0]
         indices_fraud = np.where(y==1)[0]
 

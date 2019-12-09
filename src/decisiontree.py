@@ -5,7 +5,7 @@ import scikitplot as skplt
 import time
 from sklearn import tree
 from sklearn.metrics import accuracy_score, recall_score, precision_score
-
+from plotting import plotting_ratio
 from data_process import retrieve_data
 
 """
@@ -15,9 +15,10 @@ runs the classifier class with data from the data package
 def decisionsTree_clf_sklearn():
     # ratio_ = 0.25
 
-    n = 50
-    ratio_ = 10**(-np.linspace(2, 0, n))
-    print (ratio_)
+    n = 61
+    ratio_ = 10**(-np.linspace(6, 0, n))
+    # ratio_ = np.arange(1,101)/100
+    print("ratio: ", ratio_)
     n = len(ratio_)
     timer = np.zeros(n)
     acc_score = np.zeros(n)
@@ -38,20 +39,9 @@ def decisionsTree_clf_sklearn():
         timer[i] =time2 -time1
         # print("time = ",timer[i]," s")
 
-    plt.semilogx(ratio_,acc_score, "-o")
-    plt.semilogx(ratio_,prec_score, "-o")
-    plt.semilogx(ratio_,rec_score, "-o")
-    plt.xlabel("ratio")
-    plt.ylabel("score")
-    plt.title("Scikit-Learn DecisionsTree score for different ratios")
-    plt.legend(['accuracy', "precision", "recall"])
-    plt.show()
-
-
-    print ("ratio: ",ratio_)
+    plotting_ratio(ratio_, acc_score, prec_score, rec_score, "DecisionsTree")
     print("accuracy_score",acc_score)
     print("precision_score",prec_score)
     print("rec_score",rec_score)
-
 
 decisionsTree_clf_sklearn()
