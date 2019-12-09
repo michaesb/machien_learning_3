@@ -16,7 +16,7 @@ def decisionsTree_clf_sklearn():
     # ratio_ = 0.25
 
     n = 61
-    ratio_ = 10**(-np.linspace(6, 0, n))
+    ratio_ = 10**(-np.linspace(0.5, 0.0, n))
     # ratio_ = np.arange(1,101)/100
     print("ratio: ", ratio_)
     n = len(ratio_)
