@@ -59,31 +59,46 @@ def neuralnet_clf_sklearn():
     print("rec_score",rec_score)
 
 
-neuralnet_clf_sklearn()
+# neuralnet_clf_sklearn()
 
 def grid_search_nn():
     X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1 )
 
     clf = sklearn.neural_network.MLPClassifier(
-                                hidden_layer_sizes = (10,10),
                                 learning_rate = "adaptive",
                                 learning_rate_init = 0.001,
                                 max_iter = 1000,
                                 tol = 1e-10,
-                                verbose = False,
+                                verbose = False
                                 )
 
     ## Grid search
     param_grid = {
-        "hiddel_layer_sizes" : [(10),(10,10),(10,10,10),(10,10,10,10)],
-        "learning_rate_init": [0.1, 0.01, 0.001, 0.0001]
+        "hidden_layer_sizes" : [(10),(10,10),(10,10,10),(10,10,10,10)],
+        "activation": ["logistic"],
+        "solver": ["lbfgs","sgd","adam"],
+        "alpha": 10.0**-np.arange(1, 6),
+        "max_iter": [500,1000,1500]
     }
+    # param_grid = {
+    #     "hidden_layer_sizes" : [(10),(10,10),(10,10,10),(10,10,10,10)],
+    #     "activation": ["logistic","tanh","relu"],
+    #     "solver": ["lbfgs","sgd","adam"],
+    #     "alpha": 10.0**-np.arange(1, 6),
+    #     "max_iter": [500,1000,1500]
+    # }
+    # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.001, 'hidden_layer_sizes': (10, 10, 10, 10), 'max_iter': 1000, 'solver': 'lbfgs'}
+    # Accuracy Score:  0.9292
+    # Precision Score: 0.9437. What percentage of the predicted frauds were frauds?
+    # Recall Score:    0.9152. What percentage of the actual frauds were predicted?
 
     scorers = {
         "precision_score": make_scorer(precision_score),
         "recall_score": make_scorer(recall_score),
         "accuracy_score": make_scorer(accuracy_score)
     }
+
+
 
     nn_grid = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", n_jobs=-1)
     nn_grid.fit(X_train, y_train)
@@ -101,3 +116,5 @@ def grid_search_nn():
     print(f"Precision Score: {precision:.4f}. What percentage of the predicted frauds were frauds?" )
     recall = recall_score(y_test, prediction)
     print(f"Recall Score:    {recall:.4f}. What percentage of the actual frauds were predicted?")
+
+grid_search_nn()
