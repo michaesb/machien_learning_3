@@ -29,10 +29,10 @@ def neuralnet_clf_sklearn():
 
         print(int(100*i/len(learning_rate)), "%", end = "\r")
         clf = sklearn.neural_network.MLPClassifier(
-                                hidden_layer_sizes = (80,70,60,50,40),
+                                hidden_layer_sizes = (100,100,100,100,100,100),
                                 learning_rate = "adaptive",
                                 learning_rate_init = learning_rate[i],
-                                max_iter = 10000,
+                                max_iter = 1000000,
                                 tol = 1e-10,
                                 verbose = False,
                                 )
