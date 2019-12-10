@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-import numpy as np
-import matplotlib.pyplot as plt
-import scikitplot as skplt
-from scipy.integrate import simps
-import sklearn.neural_network
-import sklearn.metrics
-from data_process import retrieve_data
 from sklearn.metrics import accuracy_score, precision_score, recall_score, make_scorer
-
 from sklearn.model_selection import GridSearchCV
+from data_process import retrieve_data
+# from scipy.integrate import simps
+import matplotlib.pyplot as plt
+import sklearn.neural_network
+import scikitplot as skplt
+import sklearn.metrics
+import numpy as np
+
 
 
 """
@@ -62,50 +62,48 @@ def neuralnet_clf_sklearn():
 # neuralnet_clf_sklearn()
 
 def grid_search_nn():
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=3 )
 
     clf = sklearn.neural_network.MLPClassifier(
                                 learning_rate = "adaptive",
                                 learning_rate_init = 0.001,
-                                max_iter = 1000,
-                                tol = 1e-10,
+                                tol = 1e-4,
                                 verbose = False
                                 )
 
     ## Grid search
     param_grid = {
-        "hidden_layer_sizes" : [(10),(10,10),(10,10,10),(10,10,10,10)],
+        # "hidden_layer_sizes" : [(10,10,10,10), (20,20,20,20), (10,10,10,10,10)],
+        "hidden_layer_sizes" : [(30),(40,40),(50,50,50),(30,30,30,30)],
         "activation": ["logistic"],
-        "solver": ["lbfgs","sgd","adam"],
-        "alpha": 10.0**-np.arange(1, 6),
-        "max_iter": [500,1000,1500]
+        "solver": ["lbfgs","adam"],
+        "alpha": [0.1, 0.01, 0.001],
+        "max_iter": [500,1000]
     }
-    # param_grid = {
-    #     "hidden_layer_sizes" : [(10),(10,10),(10,10,10),(10,10,10,10)],
-    #     "activation": ["logistic","tanh","relu"],
-    #     "solver": ["lbfgs","sgd","adam"],
-    #     "alpha": 10.0**-np.arange(1, 6),
-    #     "max_iter": [500,1000,1500]
+
+
+    # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.01, 'hidden_layer_sizes': (30, 30, 30, 30), 'max_iter': 1000, 'solver': 'adam'}    
+    # Accuracy Score:  0.9477
+    # Precision Score: 0.9422. What percentage of the predicted frauds were frauds?
+    # Recall Score:    0.9588. What percentage of the actual frauds were predicted?
+
+    # scorers = {
+    #     "precision_score": make_scorer(precision_score),
+    #     "recall_score": make_scorer(recall_score),
+    #     "accuracy_score": make_scorer(accuracy_score)
     # }
-    # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.001, 'hidden_layer_sizes': (10, 10, 10, 10), 'max_iter': 1000, 'solver': 'lbfgs'}
-    # Accuracy Score:  0.9292
-    # Precision Score: 0.9437. What percentage of the predicted frauds were frauds?
-    # Recall Score:    0.9152. What percentage of the actual frauds were predicted?
+    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", n_jobs=-1)
 
-    scorers = {
-        "precision_score": make_scorer(precision_score),
-        "recall_score": make_scorer(recall_score),
-        "accuracy_score": make_scorer(accuracy_score)
-    }
+    
+    grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
+    grid_search.fit(X_train, y_train)
 
+    prediction = grid_search.predict(X_test)
+    print("Best params for Recall Score", grid_search.best_params_)
 
-
-    nn_grid = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", n_jobs=-1)
-    nn_grid.fit(X_train, y_train)
-
-    prediction = nn_grid.predict(X_test)
-    print("Best params for Recall Score", nn_grid.best_params_)
-
+    # print("best_score_  ",grid_search.best_score_) ## USELESS. RETURNS THE BEST SCORE FOR A PARTICULAR FOLD
+    print("test score() ",grid_search.score(X_test, y_test))
+    print("train score()",grid_search.score(X_train, y_train))
 
     # logreg.fit(X_train, y_train)
     # prediction = logreg.predict(X_test)

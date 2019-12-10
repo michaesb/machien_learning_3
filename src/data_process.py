@@ -34,9 +34,10 @@ def retrieve_data( undersampling=False, ratio = 1, random_state=None):
 
     ### Do undersampling to fix imbalanced class
     if undersampling:
+
         if random_state is not None:
             np.random.seed(random_state)
-        # np.random.seed(1)
+            
         if ratio > 1:
             raise ValueError("ratio cannot be bigger than one")
 

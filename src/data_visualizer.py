@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sklearn.preprocessing.data import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sb
@@ -24,14 +25,13 @@ print( f" {df.loc[:, ['Time', 'Amount']].describe()}\n" )
 ### Amount has an average credit card transaction around 88 dollars
 ### And the biggest transaction of 25691.160 dollarsssssss........
 
-"""
 sb.distplot(df["Amount"])
 plt.show()
 
 
 sb.distplot(df["Time"])
 plt.show()
-
+"""
 exit()
 """
 class_counts = df.Class.value_counts()

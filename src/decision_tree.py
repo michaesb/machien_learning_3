@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-import numpy as np
+from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer
+from sklearn.model_selection import GridSearchCV
+from data_process import retrieve_data
+from plotting import plotting_ratio
 import matplotlib.pyplot as plt
 import scikitplot as skplt
-import time
 from sklearn import tree
-from sklearn.metrics import accuracy_score, recall_score, precision_score
-from plotting import plotting_ratio
-from data_process import retrieve_data
+import numpy as np
+import time
 
 """
 runs the classifier class with data from the data package
@@ -44,4 +45,58 @@ def decisionsTree_clf_sklearn():
     print("precision_score",prec_score)
     print("rec_score",rec_score)
 
-decisionsTree_clf_sklearn()
+# decisionsTree_clf_sklearn()
+
+
+def grid_search_decisiontree():
+
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=2 )
+
+    clf = tree.DecisionTreeClassifier()
+
+    # Grid search
+    param_grid = {
+        "criterion": ["gini","entropy"],
+        "min_samples_split": [2, 3, 5, 8, 10], 
+        "max_depth": [3, 5, 10, 15, 20, 25],
+        "max_features": [5, 20, 25, 30, "auto", "sqrt", "log2"],
+        "min_samples_leaf": [1, 5, 10, 20, 50, 100]
+    }
+
+
+    # Best params for Recall Score {'criterion': 'gini', 'max_depth': 10, 'max_features': 25, 'min_samples_leaf': 1, 'min_samples_split': 2}
+    # test score()  0.9375
+    # train score() 1.0
+    # Accuracy Score:  0.9200
+    # Precision Score: 0.9036. What percentage of the predicted frauds were frauds?
+    # Recall Score:    0.9375. What percentage of the actual frauds were predicted?
+        
+    # scorers = {
+    #     "precision_score": make_scorer(precision_score),
+    #     "recall_score": make_scorer(recall_score),
+    #     "accuracy_score": make_scorer(accuracy_score)
+    # }
+    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", n_jobs=-1)
+    
+    grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
+    grid_search.fit(X_train, y_train)
+
+    prediction = grid_search.predict(X_test)
+    print("Best params for Recall Score", grid_search.best_params_)
+
+    # print("best_score_  ",grid_search.best_score_) ## USELESS. RETURNS THE BEST SCORE FOR A PARTICULAR FOLD
+    print("test score() ",grid_search.score(X_test, y_test))
+    print("train score()",grid_search.score(X_train, y_train))
+
+    # clf.fit(X_train, y_train)
+    # prediction = clf.predict(X_test)
+
+    acc = accuracy_score(y_test, prediction)
+    print(f"Accuracy Score:  {acc:.4f}")
+    precision = precision_score(y_test, prediction)
+    print(f"Precision Score: {precision:.4f}. What percentage of the predicted frauds were frauds?" )
+    recall = recall_score(y_test, prediction)
+    print(f"Recall Score:    {recall:.4f}. What percentage of the actual frauds were predicted?")
+
+
+grid_search_decisiontree()
