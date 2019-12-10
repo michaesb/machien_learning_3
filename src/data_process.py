@@ -33,6 +33,7 @@ def retrieve_data( undersampling=False, ratio = 1):
 
     ### Do undersampling to fix imbalanced class
     if undersampling:
+        np.random.seed(1)
         if ratio > 1:
             raise ValueError("ratio cannot be bigger than one")
 
@@ -55,7 +56,7 @@ def retrieve_data( undersampling=False, ratio = 1):
 
 if __name__ == '__main__':
 
-    X,y = retrieve_data()
-    print (X)
-    print ("I can't believe you've done this")
-    print (np.sum(y)/len(y)*100)
+    X_train,X_test,y_train,y_test = retrieve_data(undersampling=True, ratio=0.5)
+    print (len(y_train))
+    print (len(y_test))
+    print ()
