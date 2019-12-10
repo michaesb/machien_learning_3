@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from sklearn.preprocessing.data import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sb
@@ -6,7 +7,7 @@ import numpy as np
 import os
 from sklearn.model_selection import train_test_split
 
-def retrieve_data( undersampling=False, ratio = 1):
+def retrieve_data( undersampling=False, ratio = 1, random_state=None):
     path = os.path.dirname(os.path.realpath(__file__))
     file1 = path + "/../data/creditcard_part1.csv"
     file2 = path + "/../data/creditcard_part2.csv"
@@ -33,7 +34,9 @@ def retrieve_data( undersampling=False, ratio = 1):
 
     ### Do undersampling to fix imbalanced class
     if undersampling:
-        np.random.seed(1)
+        if random_state is not None:
+            np.random.seed(random_state)
+        # np.random.seed(1)
         if ratio > 1:
             raise ValueError("ratio cannot be bigger than one")
 
