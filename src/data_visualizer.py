@@ -26,10 +26,14 @@ print( f" {df.loc[:, ['Time', 'Amount']].describe()}\n" )
 ### And the biggest transaction of 25691.160 dollarsssssss........
 
 sb.distplot(df["Amount"])
+plt.title("Distribution of Amount", size=16)
+plt.xlabel("Amount", size=14)
 plt.show()
 
 
 sb.distplot(df["Time"])
+plt.title("Distribution of Time", size=16)
+plt.xlabel("Time (Seconds)", size=14)
 plt.show()
 """
 exit()
@@ -42,12 +46,14 @@ print(f"Non-Fraudulent: {num_non_fraudulent}")
 print(f"Ratio: {(num_fraudulent/num_non_fraudulent)*100:.3f}%\n")
 
 plt.bar(class_counts.index, [num_non_fraudulent, num_fraudulent])
-plt.xticks(class_counts.index, ('Non-num_fraudulent','Fraudulent'))
+plt.xticks(class_counts.index, ('Non-fraudulent','Fraudulent'))
+plt.title("Non-Fraudulent & Fraudulent transactions total", size=16)
+plt.ylabel("Amount", size=14)
 plt.show()
 
 
 sb.heatmap( data=df.corr(), cmap="viridis", annot=False)
-plt.show()
+plt.show()    
 
 
 ### Undersampling
@@ -89,6 +95,21 @@ np.random.shuffle(indices_under)
 X = X[indices_under]
 y = y[indices_under]
 
+plt.bar([0,1], [len(indices_nonfraud_under), len(indices_fraud)])
+plt.xticks(class_counts.index, ('Non-fraudulent','Fraudulent'))
+plt.title("Non-Fraudulent & Fraudulent transactions total", size=16)
+plt.ylabel("Amount", size=14)
+plt.show()
+
+sb.distplot(X[:,-1])
+plt.title("Distribution of Amount", size=16)
+plt.xlabel("Amount", size=14)
+plt.show()
+
+sb.distplot(X[:,0])
+plt.title("Distribution of Time", size=16)
+plt.xlabel("Time (Seconds)", size=14)
+plt.show()
 
 
 ### Train test split
