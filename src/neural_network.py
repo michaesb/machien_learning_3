@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-from sklearn.metrics import accuracy_score, precision_score, recall_score, make_scorer
+from sklearn.metrics import accuracy_score, precision_score, recall_score, make_scorer, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from data_process import retrieve_data
-# from scipy.integrate import simps
 import matplotlib.pyplot as plt
 import sklearn.neural_network
 import scikitplot as skplt
+from scoring import scores
 import sklearn.metrics
+import seaborn as sb
 import numpy as np
 
 
@@ -15,7 +16,7 @@ import numpy as np
 runs the classifier class with data from the data package
 """
 
-def neuralnet_clf_sklearn():
+def learningrate_nn():
     ratio_ = 0.1
     X_train, X_test, y_train, y_test = retrieve_data(undersampling = True, ratio= ratio_)
 
@@ -59,7 +60,6 @@ def neuralnet_clf_sklearn():
     print("rec_score",rec_score)
 
 
-# neuralnet_clf_sklearn()
 
 def grid_search_nn():
     X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=3 )
@@ -79,14 +79,6 @@ def grid_search_nn():
         "alpha": [0.1, 0.01, 0.001],
         "max_iter": [500,1000]
     }
-    # param_grid = {
-    #     # "hidden_layer_sizes" : [(10,10,10,10), (20,20,20,20), (10,10,10,10,10)],
-    #     "hidden_layer_sizes" : [(30),(40,40),(50,50,50),(30,30,30,30), (30,30,30,30,30)],
-    #     "activation": ["logistic", "tanh"],g
-    #     "solver": ["lbfgs","adam", "sgd"],
-    #     "alpha": [0.1, 0.01, 0.001, 0.0001],
-    #     "max_iter": [500,1000, 20000]
-    # }
 
     # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.01, 'hidden_layer_sizes': (30, 30, 30, 30), 'max_iter': 1000, 'solver': 'adam'}    
     # Accuracy Score:  0.9477
@@ -105,24 +97,31 @@ def grid_search_nn():
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
 
-
-    print("Best params for Recall Score", grid_search.best_params_)
-
-    acc = accuracy_score(y_test, prediction)
-    print(f"Accuracy Test Score:   {acc:.4f}")
-    precision = precision_score(y_test, prediction)
-    print(f"Precision Test Score:  {precision:.4f}. What percentage of the predicted frauds were frauds?" )
-    recall = recall_score(y_test, prediction)
-    print(f"Recall Test Score:     {recall:.4f}. What percentage of the actual frauds were predicted?")
-    print(f"Recall Train Score     {grid_search.score(X_train, y_train):.4f}")
+    scores(prediction, y_test, X_train, y_train, grid_search)
 
 
-    mean_train_recall_score    = grid_search.cv_results_["mean_train_recall_score"]
-    index = np.argmax( mean_train_recall_score )
-    print(f"Recall CV Train Score: {mean_train_recall_score[index]:.4f}" )
-    mean_test_recall_score    = grid_search.cv_results_["mean_test_recall_score"]
-    index = np.argmax( mean_test_recall_score )
-    print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
+def neuralnet():
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=3 )
+
+    clf = sklearn.neural_network.MLPClassifier(
+                                learning_rate = "adaptive",
+                                learning_rate_init = 0.001,
+                                activation= "logistic",
+                                alpha = 0.01,
+                                hidden_layer_sizes = (30, 30, 30, 30),
+                                max_iter = 1000,
+                                solver = "adam",
+                                tol = 1e-4,
+                                verbose = False
+                                )
 
 
-grid_search_nn()
+    clf.fit(X_train, y_train)
+    prediction = clf.predict(X_test)
+
+    scores(prediction, y_test, X_train, y_train)
+    
+
+# learningrate_nn()
+# grid_search_nn()
+neuralnet()

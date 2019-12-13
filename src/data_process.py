@@ -32,7 +32,7 @@ def retrieve_data( undersampling=False, ratio = 1, random_state=None):
     X = standard_scaler.fit_transform(X)
 
 
-    ### Do undersampling to fix imbalanced class
+    ### Undersampling to fix imbalanced class
     if undersampling:
 
         if random_state is not None:
@@ -51,16 +51,15 @@ def retrieve_data( undersampling=False, ratio = 1, random_state=None):
         indices_under = np.concatenate( (indices_fraud, indices_nonfraud_under) )
         np.random.shuffle(indices_under)
 
-        X = X[indices_under]
-        y = y[indices_under]
-    ####
+        X_under = X[indices_under]
+        y_under = y[indices_under]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=4)
+    X_train, X_test, y_train, y_test = train_test_split(X_under, y_under, test_size=0.33, random_state=4)
     return X_train,X_test,y_train,y_test
 
 if __name__ == '__main__':
 
-    X_train,X_test,y_train,y_test = retrieve_data(undersampling=True, ratio=0.5)
+    X_train, X_test, y_train, y_test = retrieve_data(undersampling=True, ratio=0.5)
     print (len(y_train))
     print (len(y_test))
     print ()

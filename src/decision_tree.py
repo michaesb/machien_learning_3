@@ -1,19 +1,22 @@
 #!/usr/bin/env python
-from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer
+from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from data_process import retrieve_data
 from plotting import plotting_ratio
 import matplotlib.pyplot as plt
 import scikitplot as skplt
+from scoring import scores
 from sklearn import tree
+import seaborn as sb
 import numpy as np
+import graphviz
 import time
 
 """
 runs the classifier class with data from the data package
 """
 
-def decisionsTree_clf_sklearn():
+def ratio_decisiontree():
     # ratio_ = 0.25
 
     n = 61
@@ -49,7 +52,6 @@ def decisionsTree_clf_sklearn():
     print("precision_score",prec_score)
     print("rec_score",rec_score)
 
-# decisionsTree_clf_sklearn()
 
 
 def grid_search_decisiontree():
@@ -68,13 +70,8 @@ def grid_search_decisiontree():
     }
 
 
-    # Best params for Recall Score {'criterion': 'gini', 'max_depth': 10, 'max_features': 25, 'min_samples_leaf': 1, 'min_samples_split': 2}
-    # test score()  0.9375
-    # train score() 1.0
-    # Accuracy Score:  0.9200
-    # Precision Score: 0.9036. What percentage of the predicted frauds were frauds?
-    # Recall Score:    0.9375. What percentage of the actual frauds were predicted?
-        
+    # Best params for Recall Score {'criterion': 'entropy', 'max_depth': 20, 'max_features': 5, 'min_samples_leaf': 1, 'min_samples_split': 2}
+
     scorers = {
         "precision_score": make_scorer(precision_score),
         "recall_score": make_scorer(recall_score),
@@ -86,24 +83,40 @@ def grid_search_decisiontree():
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
 
+    scores(prediction, y_test, X_train, y_train, grid_search)
 
-    print("Best params for Recall Score", grid_search.best_params_)
+    dot_data = tree.export_graphviz(grid_search.best_estimator_, out_file=None, filled=True, rounded=True,  special_characters=True)
+    graph = graphviz.Source(dot_data)
+    graph.format = "png"
+    graph.render("tree")
 
-    acc = accuracy_score(y_test, prediction)
-    print(f"Accuracy Test Score:   {acc:.4f}")
-    precision = precision_score(y_test, prediction)
-    print(f"Precision Test Score:  {precision:.4f}. What percentage of the predicted frauds were frauds?" )
-    recall = recall_score(y_test, prediction)
-    print(f"Recall Test Score:     {recall:.4f}. What percentage of the actual frauds were predicted?")
-    print(f"Recall Train Score     {grid_search.score(X_train, y_train):.4f}")
+    
+def decisiontree():
 
-    mean_train_recall_score    = grid_search.cv_results_["mean_train_recall_score"]
-    index = np.argmax( mean_train_recall_score )
-    print(f"Recall CV Train Score: {mean_train_recall_score[index]:.4f}" )
-    mean_test_recall_score    = grid_search.cv_results_["mean_test_recall_score"]
-    index = np.argmax( mean_test_recall_score )
-    print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=2 )
 
-    # tree.export_graphviz(grid_search.best_estimator_, out_file="tree.dot")
+    clf = tree.DecisionTreeClassifier(
+                                    criterion = "entropy",
+                                    max_depth = 20,
+                                    max_features = 5,
+                                    min_samples_leaf = 1,
+                                    min_samples_split = 2
+                                    )
+
+
+    clf.fit(X_train, y_train)
+    prediction = clf.predict(X_test)
+
+    scores(prediction, y_test, X_train, y_train)
+
+    dot_data = tree.export_graphviz(clf, out_file=None, filled=True, rounded=True,  special_characters=True)
+    graph = graphviz.Source(dot_data)
+    graph.format = "png"
+    graph.render("tree")
+
+# ratio_decisiontree()
 
 grid_search_decisiontree()
+
+# decisiontree()
+

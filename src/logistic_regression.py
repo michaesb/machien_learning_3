@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer
+from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer, confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
 from data_process import retrieve_data
 import matplotlib.pyplot as plt
 import scikitplot as skplt
+from scoring import scores
+import seaborn as sb
 import numpy as np
 
 
@@ -36,47 +38,8 @@ def grid_search_logreg():
     prediction = grid_search.predict(X_test)
 
 
-    print("Best params for Recall Score", grid_search.best_params_)
+    scores(prediction, y_test, X_train, y_train, grid_search)
 
-    acc = accuracy_score(y_test, prediction)
-    print(f"Accuracy Test Score:   {acc:.4f}")
-    precision = precision_score(y_test, prediction)
-    print(f"Precision Test Score:  {precision:.4f}. What percentage of the predicted frauds were frauds?" )
-    recall = recall_score(y_test, prediction)
-    print(f"Recall Test Score:     {recall:.4f}. What percentage of the actual frauds were predicted?")
-    print(f"Recall Train Score     {grid_search.score(X_train, y_train):.4f}")
-
-    # print(grid_search.cv_results_)
-
-    mean_train_recall_score    = grid_search.cv_results_["mean_train_recall_score"]
-    # mean_train_precision_score = grid_search.cv_results_["mean_train_precision_score"]
-    # mean_train_accuracy_score  = grid_search.cv_results_["mean_train_accuracy_score"]
-    index = np.argmax( mean_train_recall_score )
-    print(f"Recall CV Train Score: {mean_train_recall_score[index]:.4f}" )
-    # print( mean_train_precision_score[index] )
-    # print( mean_train_accuracy_score[index] )
-
-    mean_test_recall_score    = grid_search.cv_results_["mean_test_recall_score"]
-    # mean_test_precision_score = grid_search.cv_results_["mean_test_precision_score"]
-    # mean_test_accuracy_score  = grid_search.cv_results_["mean_test_accuracy_score"]
-    index = np.argmax( mean_test_recall_score )
-    print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
-    # print( mean_test_precision_score[index] )
-    # print( mean_test_accuracy_score[index] )
-
-    import seaborn as sns
-    import matplotlib.pyplot as plt
-    from sklearn.metrics import confusion_matrix
-    ax= plt.subplot()
-    cm = confusion_matrix(y_test, prediction)
-    sns.heatmap(cm, annot=True, ax = ax, fmt="g", cmap="Greens")
-    # labels, title and ticks
-    ax.set_xlabel("Predicted labels")
-    ax.set_ylabel("True labels")
-    ax.set_title("Confusion Matrix")
-    ax.xaxis.set_ticklabels(["Fraud", "Non-fraud"])
-    ax.yaxis.set_ticklabels(["Fraud", "Non-fraud"])
-    plt.show()
 
 
 def logreg():
@@ -91,25 +54,8 @@ def logreg():
     clf.fit(X_train, y_train)
     prediction = clf.predict(X_test)
 
-    acc = accuracy_score(y_test, prediction)
-    print(f"Accuracy Test Score:   {acc:.4f}")
-    precision = precision_score(y_test, prediction)
-    print(f"Precision Test Score:  {precision:.4f}. What percentage of the predicted frauds were frauds?" )
-    recall = recall_score(y_test, prediction)
-    print(f"Recall Test Score:     {recall:.4f}. What percentage of the actual frauds were predicted?")
+    scores(prediction, y_test, X_train, y_train)
 
-    import seaborn as sns
-    import matplotlib.pyplot as plt     
-    from sklearn.metrics import confusion_matrix
-    ax= plt.subplot()
-    cm = confusion_matrix(y_test, prediction)
-    sns.heatmap(cm, annot=True, ax = ax, fmt="g", cmap="Greens")
-    # labels, title and ticks
-    ax.set_xlabel("Predicted labels")
-    ax.set_ylabel("True labels")
-    ax.set_title("Confusion Matrix")
-    ax.xaxis.set_ticklabels(["Fraud", "Non-fraud"])
-    ax.yaxis.set_ticklabels(["Fraud", "Non-fraud"])
-    plt.show()
 
+# grid_search_logreg()
 logreg()

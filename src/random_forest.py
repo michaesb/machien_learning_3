@@ -1,63 +1,68 @@
 #!/usr/bin/env python
-from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer
+from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer, confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from data_process import retrieve_data
 import matplotlib.pyplot as plt
 import scikitplot as skplt
+from scoring import scores
+import seaborn as sb
 import numpy as np
 
-X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=None)
+def grid_search_randomforest():
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=None)
 
-### Random Forest Classifier
-clf = RandomForestClassifier(random_state=4)
+    ### Random Forest Classifier
+    clf = RandomForestClassifier(random_state=4)
 
-## Grid search
-param_grid = {
-    "n_estimators" : [10, 100, 200],
-    "min_samples_split": [3, 5, 10, 15], 
-    "max_depth": [3, 5, 15, 25],
-    "max_features": [5, 20, 30, "auto", "sqrt", "log2"]
-}
+    ## Grid search
+    param_grid = {
+        "n_estimators" : [10, 100, 200],
+        "min_samples_split": [3, 5, 10, 15], 
+        "max_depth": [3, 5, 15, 25],
+        "max_features": [5, 20, 30, "auto", "sqrt", "log2"]
+    }
 
-# Best params for Recall Score {'max_depth': 15, 'max_features': 30, 'min_samples_split': 15, 'n_estimators': 10}
-# test score()  0.891566265060241
-# train score() 0.9631901840490797
-# Accuracy Score:  0.9231
-# Precision Score: 0.9548. What percentage of the predicted frauds were frauds?
-# Recall Score:    0.8916. What percentage of the actual frauds were predicted?
-
-
-scorers = {
-    "precision_score": make_scorer(precision_score),
-    "recall_score": make_scorer(recall_score),
-    "accuracy_score": make_scorer(accuracy_score)
-}
-grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-# grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
-
-grid_search.fit(X_train, y_train)
-prediction = grid_search.predict(X_test)
+    # Best params for Recall Score {'max_depth': 15, 'max_features': 30, 'min_samples_split': 5, 'n_estimators': 10}
+    # Accuracy Test Score:   0.9169
+    # Precision Test Score:  0.9448. What percentage of the predicted frauds were frauds?
+    # Recall Test Score:     0.8953. What percentage of the actual frauds were predicted?
+    # Recall Train Score     0.9844
+    # Recall CV Train Score: 1.0000
+    # Recall CV Test Score:  0.9156
 
 
-print("Best params for Recall Score", grid_search.best_params_)
+    scorers = {
+        "precision_score": make_scorer(precision_score),
+        "recall_score": make_scorer(recall_score),
+        "accuracy_score": make_scorer(accuracy_score)
+    }
+    grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
+    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
 
-# clf = RandomForestClassifier(random_state=4, **grid_search.best_params_)
-# clf.fit(X_train, y_train)
-# prediction = clf.predict(X_test)
-
-acc = accuracy_score(y_test, prediction)
-print(f"Accuracy Test Score:   {acc:.4f}")
-precision = precision_score(y_test, prediction)
-print(f"Precision Test Score:  {precision:.4f}. What percentage of the predicted frauds were frauds?" )
-recall = recall_score(y_test, prediction)
-print(f"Recall Test Score:     {recall:.4f}. What percentage of the actual frauds were predicted?")
-print(f"Recall Train Score     {grid_search.score(X_train, y_train):.4f}")
+    grid_search.fit(X_train, y_train)
+    prediction = grid_search.predict(X_test)
 
 
-mean_train_recall_score    = grid_search.cv_results_["mean_train_recall_score"]
-index = np.argmax( mean_train_recall_score )
-print(f"Recall CV Train Score: {mean_train_recall_score[index]:.4f}" )
-mean_test_recall_score    = grid_search.cv_results_["mean_test_recall_score"]
-index = np.argmax( mean_test_recall_score )
-print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
+    scores(prediction, y_test, X_train, y_train, grid_search)
+
+def  randomforest():
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=None)
+
+    ### Random Forest Classifier
+    clf = RandomForestClassifier(
+                                max_depth = 15,
+                                max_features = 30,
+                                min_samples_split = 5, 
+                                n_estimators = 10
+                                )
+
+    clf.fit(X_train, y_train)
+    prediction = clf.predict(X_test)
+
+
+    scores(prediction, y_test, X_train, y_train)
+    
+
+# grid_search_randomforest()
+randomforest()
