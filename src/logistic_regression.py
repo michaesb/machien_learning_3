@@ -61,4 +61,17 @@ print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
 # print( mean_test_precision_score[index] )
 # print( mean_test_accuracy_score[index] )
 
+import seaborn as sns
+import matplotlib.pyplot as plt     
+from sklearn.metrics import confusion_matrix
+ax= plt.subplot()
+cm = confusion_matrix(y_test, prediction)
+sns.heatmap(cm, annot=True, ax = ax); #annot=True to annotate cells
+# labels, title and ticks
+ax.set_xlabel('Predicted labels')
+ax.set_ylabel('True labels')
+ax.set_title('Confusion Matrix')
+ax.xaxis.set_ticklabels(['Fraud', 'Non-fraud'])
+ax.yaxis.set_ticklabels(['Fraud', 'Non-fraud'])
+plt.show()
 
