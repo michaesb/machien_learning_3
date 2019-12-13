@@ -32,7 +32,6 @@ def grid_search_logreg():
         "accuracy_score": make_scorer(accuracy_score)
     }
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
 
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
@@ -47,7 +46,6 @@ def logreg():
     X = np.concatenate((X_train, X_test), axis=0)
     y = np.append(y_train, y_test)
 
-
     ### Logistic Regression
     clf = LogisticRegression(random_state=4, solver="liblinear", C=0.01, penalty="l1")
 
@@ -57,5 +55,5 @@ def logreg():
     scores(prediction, y_test, X_train, y_train)
 
 
-# grid_search_logreg()
-logreg()
+grid_search_logreg()
+# logreg()

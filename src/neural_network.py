@@ -79,12 +79,14 @@ def grid_search_nn():
         "alpha": [0.1, 0.01, 0.001],
         "max_iter": [500,1000]
     }
-
-    # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.01, 'hidden_layer_sizes': (30, 30, 30, 30), 'max_iter': 1000, 'solver': 'adam'}    
-    # Accuracy Score:  0.9477
-    # Precision Score: 0.9422. What percentage of the predicted frauds were frauds?
-    # Recall Score:    0.9588. What percentage of the actual frauds were predicted?
-
+    
+    # Best params for Recall Score {'activation': 'logistic', 'alpha': 0.1, 'hidden_layer_sizes': (30, 30, 30, 30), 'max_iter': 500, 'solver': 'lbfgs'}
+    # Accuracy Test Score:   0.9231
+    # Precision Test Score:  0.9062. What percentage of the predicted frauds were frauds?
+    # Recall Test Score:     0.9355. What percentage of the actual frauds were predicted?
+    # Recall Train Score     1.0000
+    # Recall CV Train Score: 1.0000
+    # Recall CV Test Score:  0.9555
 
     scorers = {
         "precision_score": make_scorer(precision_score),
@@ -92,7 +94,6 @@ def grid_search_nn():
         "accuracy_score": make_scorer(accuracy_score)
     }
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
     
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
@@ -107,10 +108,10 @@ def neuralnet():
                                 learning_rate = "adaptive",
                                 learning_rate_init = 0.001,
                                 activation= "logistic",
-                                alpha = 0.01,
+                                alpha = 0.1,
                                 hidden_layer_sizes = (30, 30, 30, 30),
-                                max_iter = 1000,
-                                solver = "adam",
+                                max_iter = 500,
+                                solver = "lbfgs",
                                 tol = 1e-4,
                                 verbose = False
                                 )

@@ -70,7 +70,13 @@ def grid_search_decisiontree():
     }
 
 
-    # Best params for Recall Score {'criterion': 'entropy', 'max_depth': 20, 'max_features': 5, 'min_samples_leaf': 1, 'min_samples_split': 2}
+    # Best params for Recall Score {'criterion': 'gini', 'max_depth': 20, 'max_features': 30, 'min_samples_leaf': 1, 'min_samples_split': 2}
+    # Accuracy Test Score:   0.9108
+    # Precision Test Score:  0.8970. What percentage of the predicted frauds were frauds?
+    # Recall Test Score:     0.9250. What percentage of the actual frauds were predicted?
+    # Recall Train Score     1.0000
+    # Recall CV Train Score: 1.0000
+    # Recall CV Test Score:  0.9367
 
     scorers = {
         "precision_score": make_scorer(precision_score),
@@ -78,7 +84,6 @@ def grid_search_decisiontree():
         "accuracy_score": make_scorer(accuracy_score)
     }
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
     
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
@@ -96,9 +101,9 @@ def decisiontree():
     X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=2 )
 
     clf = tree.DecisionTreeClassifier(
-                                    criterion = "entropy",
+                                    criterion = "gini",
                                     max_depth = 20,
-                                    max_features = 5,
+                                    max_features = 30,
                                     min_samples_leaf = 1,
                                     min_samples_split = 2
                                     )

@@ -28,7 +28,6 @@ def scores(prediction, y_test, X_train, y_train, grid_search=None):
     ax= plt.subplot()
     cm = confusion_matrix(y_test, prediction)
     sb.heatmap(cm, annot=True, ax = ax, fmt="g", cmap="Greens")
-    # labels, title and ticks
     ax.set_xlabel("Predicted")
     ax.set_ylabel("True")
     ax.set_title("Confusion Matrix")

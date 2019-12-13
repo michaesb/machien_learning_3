@@ -38,15 +38,13 @@ def grid_search_randomforest():
         "accuracy_score": make_scorer(accuracy_score)
     }
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-    # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
 
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
 
-
     scores(prediction, y_test, X_train, y_train, grid_search)
 
-def  randomforest():
+def randomforest():
     X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=None)
 
     ### Random Forest Classifier
@@ -59,7 +57,6 @@ def  randomforest():
 
     clf.fit(X_train, y_train)
     prediction = clf.predict(X_test)
-
 
     scores(prediction, y_test, X_train, y_train)
     
