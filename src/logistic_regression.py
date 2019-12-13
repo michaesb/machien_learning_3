@@ -17,7 +17,7 @@ clf = LogisticRegression(random_state=4, solver='liblinear')
 
 ## Grid search
 param_grid= {
-    "C" : np.logspace(-3,3,7), 
+    "C" : np.logspace(-3,3,7),
     "penalty" : ["l1", "l2"]
 }
 
@@ -30,6 +30,7 @@ grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall
 # grid_search = GridSearchCV(clf, param_grid, cv=5, scoring="recall", n_jobs=-1)
 
 grid_search.fit(X_train, y_train)
+exit()
 prediction = grid_search.predict(X_test)
 
 
@@ -62,11 +63,11 @@ print(f"Recall CV Test Score:  {mean_test_recall_score[index]:.4f}" )
 # print( mean_test_accuracy_score[index] )
 
 import seaborn as sns
-import matplotlib.pyplot as plt     
+import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 ax= plt.subplot()
 cm = confusion_matrix(y_test, prediction)
-sns.heatmap(cm, annot=True, ax = ax); #annot=True to annotate cells
+sns.heatmap(cm, annot=True, ax = ax,fmt ="g"); #annot=True to annotate cells
 # labels, title and ticks
 ax.set_xlabel('Predicted labels')
 ax.set_ylabel('True labels')
@@ -74,4 +75,3 @@ ax.set_title('Confusion Matrix')
 ax.xaxis.set_ticklabels(['Fraud', 'Non-fraud'])
 ax.yaxis.set_ticklabels(['Fraud', 'Non-fraud'])
 plt.show()
-

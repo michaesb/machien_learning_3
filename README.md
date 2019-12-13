@@ -36,11 +36,9 @@ The methods below have investigated by plotting and looking at mutliple input pa
 
 ### Logistic Regression
 
-
 ```
 python src/logistic_regression.py
 ```
-
 
 ### Neural Network
 
@@ -59,7 +57,6 @@ python src/decision_tree.py
 ```
 python src/random_forest.py
 ```
-
 
 ## Test
 

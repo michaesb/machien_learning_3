@@ -117,9 +117,6 @@ plt.title("Distribution of Time", size=16)
 plt.xlabel("Time (Seconds)", size=14)
 plt.show()
 
-import scikitplot as skplt
-skplt.metrics.plot_confusion_matrix(y_test, predictions, normalize=True)
-plt.show()
 ### Train test split
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=4)
