@@ -39,6 +39,10 @@ def decisionsTree_clf_sklearn():
         timer[i] =time2 -time1
         # print("time = ",timer[i]," s")
 
+        # import scikitplot as skplt
+        # skplt.metrics.plot_confusion_matrix(y_test, predict, normalize=True, hide_counts=False)
+        # plt.show()
+
     plotting_ratio(ratio_, acc_score, prec_score, rec_score, "DecisionsTree")
     print("accuracy_score",acc_score)
     print("precision_score",prec_score)

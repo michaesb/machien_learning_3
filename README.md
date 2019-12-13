@@ -19,7 +19,7 @@ _____________ - Our rapport on the methods result
 
 ## Data
 Here we look at detection of fraud on credit card data. We extract data from the data folder, which contains 2 files. (The files was split in  two in order to be able to upload the data to Github).
-The files together contain the data from credit card transactions over 24 hours in Europe. These contain a number of parameters and if the transaction was fraudulent or non-fraudulent. The ratio between fraudulent and non-fraudulent is 0.173 %.
+The files together contain the data from credit card transactions over 24 hours in Europe. These contain a number of parameters and if the transaction was fraudulent or non-fraudulent. Fraudelent is classified as a 1 and non-fraudulent is a 0. The ratio between fraudulent and non-fraudulent is 0.173 %.
 
 Due to privacy concerns, we can only identify a few features E.g. time and amount. The Unknown parameters are classified as V1, V2, ..., V28. According to the Kaggle description, the dataset has already been simplified with a PCA (principal component analysis).
 

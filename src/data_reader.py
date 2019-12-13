@@ -5,6 +5,12 @@ import pandas as pd
 import numpy as np
 import os
 
+"""
+A program prints and plots different properties of the datasets and process it
+
+"""
+
+
 path = os.path.dirname(os.path.realpath(__file__))
 file1 = path + "/../data/creditcard_part1.csv"
 file2 = path + "/../data/creditcard_part2.csv"
@@ -23,7 +29,6 @@ print( f" {df.loc[:, ['Time', 'Amount']].describe()}\n" )
 
 ### Amount has an average credit card transaction around 88 dollars
 ### And the biggest transaction of 25691.160 dollarsssssss........
-
 """
 sb.distplot(df["Amount"])
 plt.show()
@@ -31,9 +36,9 @@ plt.show()
 
 sb.distplot(df["Time"])
 plt.show()
-
-exit()
 """
+
+
 class_counts = df.Class.value_counts()
 num_fraudulent = class_counts[1]
 num_non_fraudulent = class_counts[0]
@@ -90,8 +95,9 @@ X = X[indices_under]
 y = y[indices_under]
 
 
-
+import scikitplot as skplt
+skplt.metrics.plot_confusion_matrix(y_test, predictions, normalize=True)
+plt.show()
 ### Train test split
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=4)
-

@@ -8,3 +8,4 @@
 6. Update the README.md (put in correct data visualization)
 7. pick and fix the notebook or the data_reader.py
 8. Quote the rapport in the readme.md
+9. Document the code
