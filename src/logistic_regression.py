@@ -12,7 +12,7 @@ import numpy as np
 
 def grid_search_logreg():
 
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=3 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=3 )
     X = np.concatenate((X_train, X_test), axis=0)
     y = np.append(y_train, y_test)
 
