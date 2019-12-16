@@ -62,24 +62,6 @@ sb.heatmap( data=df.corr(), cmap="viridis", annot=False)
 plt.show()
 
 
-### Undersampling
-# indices = np.arange(0, num_fraudulent)
-
-# frauds_df = df.loc[ df["Class"] == 1 ]
-# non_frauds_df = df.loc[ df["Class"] == 0 ]
-
-# indices = np.arange(0, num_non_fraudulent)
-# indices = np.random.choice(indices, num_fraudulent, replace=False)
-
-# #non_frauds_df = non_frauds_df.loc[ indices ]
-# non_frauds_df = non_frauds_df.reindex( indices )
-
-# under_df  = pd.concat((frauds_df, non_frauds_df), ignore_index=True)
-# df = under_df.sample(frac=1).reset_index(drop=True)
-
-####
-
-
 ## There are no categories in the dataset, so no need to do one-hot encoding.
 X = df.loc[:, df.columns != 'Class'].values
 y = df.loc[:, df.columns == 'Class'].values.ravel()
