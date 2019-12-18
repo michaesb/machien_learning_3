@@ -37,10 +37,8 @@ def logreg_gridsearch():
     ## Creating the grid search object. Using refit="recall_score" to optimize using this score
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
 
-    ## Running the grid search method with .fit, to find the best parameters for this method.
     grid_search.fit(X_train, y_train)
 
-    ## Getting the prediction and finding the scores using our helper function scores()
     prediction = grid_search.predict(X_test)
     scores(prediction, y_test, X_train, y_train, grid_search)
 
