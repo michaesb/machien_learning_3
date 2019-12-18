@@ -91,7 +91,7 @@ def decisiontree_gridsearch():
     dot_data = tree.export_graphviz(grid_search.best_estimator_, out_file=None, filled=True, rounded=True,  special_characters=True)
     graph = graphviz.Source(dot_data)
     graph.format = "png"
-    graph.render("tree")
+    graph.render("plots/tree")
 
 
     
@@ -120,13 +120,13 @@ def decisiontree_tuned():
     dot_data = tree.export_graphviz(clf, out_file=None, filled=True, rounded=True,  special_characters=True)
     graph = graphviz.Source(dot_data)
     graph.format = "png"
-    graph.render("tree")
+    graph.render("plots/tree")
 
 
 
 ### Uncomment the function you'd like to run:
 
 # decisiontree_undersamplingratio()
-decisiontree_gridsearch()
-# decisiontree_tuned()
+# decisiontree_gridsearch()
+decisiontree_tuned()
 
