@@ -1,52 +1,59 @@
 #!/usr/bin/env python
-from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer, confusion_matrix
+
+## Importing needed packages
+from sklearn.metrics import accuracy_score, recall_score, precision_score, make_scorer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-from data_process import retrieve_data
-import matplotlib.pyplot as plt
-import scikitplot as skplt
-from scoring import scores
-import seaborn as sb
 import numpy as np
 
-
-def grid_search_logreg():
-
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
-    X = np.concatenate((X_train, X_test), axis=0)
-    y = np.append(y_train, y_test)
+## Importing helper functions
+from data_process import retrieve_data
+from scoring import scores
 
 
-    ### Logistic Regression
+def logreg_gridsearch():
+    """
+    This function reads in the dataset and performs a logistic regression method and .. 
+    using Grid Search to find the optimum parameters that will maximize the recall score,
+    """
+
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=3 )
+
     clf = LogisticRegression(random_state=4, solver="liblinear")
 
-    ## Grid search
+    ## Grid search parameter grid
     param_grid= {
         "C" : np.logspace(-3,3,7),
         "penalty" : ["l1", "l2"]
     }
 
+    ## Different scorers for the grid search
     scorers = {
         "precision_score": make_scorer(precision_score),
         "recall_score": make_scorer(recall_score),
         "accuracy_score": make_scorer(accuracy_score)
     }
+
+    ## Creating the grid search object. Using refit="recall_score" to optimize using this score
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
 
+    ## Running the grid search method with .fit, to find the best parameters for this method.
     grid_search.fit(X_train, y_train)
+
+    ## Getting the prediction and finding the scores using our helper function scores()
     prediction = grid_search.predict(X_test)
-
-
     scores(prediction, y_test, X_train, y_train, grid_search)
 
 
 
-def logreg():
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
-    X = np.concatenate((X_train, X_test), axis=0)
-    y = np.append(y_train, y_test)
+def logreg_tuned():
+    """
+    This function reads the dataset and uses logistic regression ..
+    to test optimized parameters found in the function above.
+    """
 
-    ### Logistic Regression
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
+
     clf = LogisticRegression(random_state=4, solver="liblinear", C=0.01, penalty="l1")
 
     clf.fit(X_train, y_train)
@@ -55,5 +62,7 @@ def logreg():
     scores(prediction, y_test, X_train, y_train)
 
 
-grid_search_logreg()
-# logreg()
+## Uncomment the function you'd like to run:
+
+logreg_gridsearch()
+# logreg_tuned()
