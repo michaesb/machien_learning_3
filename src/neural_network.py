@@ -62,7 +62,7 @@ def learningrate_nn():
 
 
 def grid_search_nn():
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=3 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
 
     clf = sklearn.neural_network.MLPClassifier(
                                 learning_rate = "adaptive",
@@ -102,7 +102,7 @@ def grid_search_nn():
 
 
 def neuralnet():
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=3 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
 
     clf = sklearn.neural_network.MLPClassifier(
                                 learning_rate = "adaptive",

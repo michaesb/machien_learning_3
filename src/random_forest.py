@@ -10,7 +10,7 @@ import seaborn as sb
 import numpy as np
 
 def grid_search_randomforest():
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=None)
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=None)
 
     ### Random Forest Classifier
     clf = RandomForestClassifier(random_state=4)

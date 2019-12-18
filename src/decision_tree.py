@@ -56,7 +56,7 @@ def ratio_decisiontree():
 
 def grid_search_decisiontree():
 
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=2 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=2 )
 
     clf = tree.DecisionTreeClassifier()
 
