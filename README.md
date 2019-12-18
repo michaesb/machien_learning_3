@@ -18,7 +18,7 @@ Machine learning project in FYS-STK3155/4155 at the University of Oslo. We also 
 
 [Project3.pdf](https://github.com/michaesb/machine_learning_3/blob/master/Project3.pdf) - the task given in subject FYS-STK3155/4155 at the University of Oslo
 
-[_____________](https://github.com/michaesb/machine_learning_3/) - Our report for the project
+[FYS-STK_Project3_Report.pdf](ttps://github.com/michaesb/machine_learning_3/blob/master/FYS-STK_Project3_report.pdf) - Our report for the project
 
 ## Data
 We look at detection of fraudulent transactions for credit card data. We extract data from the data folder, which contains 2 files. (The data file was split in two parts in order to circumvent GitHub's file size limit).
