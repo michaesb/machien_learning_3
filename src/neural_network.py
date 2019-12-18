@@ -63,7 +63,7 @@ def neuralnet_learningrate():
 
 def neuralnet_gridsearch():
     """
-    This function retrieves the dataset, creates a neural network Multilayered Perceptron, and 
+    This function retrieves the dataset, creates a neural network Multilayered Perceptron, and
     uses a grid search method to find the most optimum parameters for maximizing the recall score.
     """
 
@@ -95,7 +95,7 @@ def neuralnet_gridsearch():
 
     ## Creating the grid search object. Using refit="recall_score" to optimize using this score
     grid_search = GridSearchCV(clf, param_grid, cv=5, scoring=scorers, refit="recall_score", return_train_score=True, n_jobs=-1)
-    
+
     grid_search.fit(X_train, y_train)
     prediction = grid_search.predict(X_test)
 
@@ -127,7 +127,7 @@ def neuralnet_tuned():
     prediction = clf.predict(X_test)
 
     scores(prediction, y_test, X_train, y_train)
-    
+
 
 
 ### Uncomment the function you'd like to run:
