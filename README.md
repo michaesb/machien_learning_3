@@ -18,7 +18,7 @@ Machine learning project in FYS-STK3155/4155 at the University of Oslo. We also 
 
 [Project3.pdf](https://github.com/michaesb/machine_learning_3/blob/master/Project3.pdf) - the task given in subject FYS-STK3155/4155 at the University of Oslo
 
-[FYS-STK_Project3_Report.pdf](ttps://github.com/michaesb/machine_learning_3/blob/master/FYS-STK_Project3_report.pdf) - Our report for the project
+[FYS-STK_Project3_Report.pdf](ttps://github.com/michaesb/machine_learning_3/blob/master/FYS-STK_Project3_Report.pdf) - Our report for the project
 
 ## Data
 We look at detection of fraudulent transactions for credit card data. We extract data from the data folder, which contains 2 files. (The data file was split in two parts in order to circumvent GitHub's file size limit).
@@ -63,14 +63,23 @@ python src/random_forest.py
 
 ## Test
 
-We have made a testfunction for the data processor, but since we used scikitlearns packages which has been heavily tested, we have not created test for these.
+We have made a test function for the file handling the data processing, but since we used Scikit-Learns packages which has been heavily tested, we did not create tests for these.
 In order to run the test execute the command below
 ```
 pytest -v
 ```
 
-
-
+## Dependencies
+This repository uses Python 3, and the following packages needs to be installed:
+* NumPy
+* MatPlotLib
+* Seaborn
+* Scikit-Learn
+* Pandas
+* Graphviz
+```
+pip install numpy matplotlib seaborn sklearn pandas graphviz
+```
 
 ### Authors
 

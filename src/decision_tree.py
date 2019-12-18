@@ -58,7 +58,7 @@ def decisiontree_gridsearch():
     to optimize the recall score of a Decision Tree classifier.
     """
 
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=2 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=2 )
 
     ## Our decision tree model
     clf = tree.DecisionTreeClassifier()

@@ -17,7 +17,7 @@ def logreg_gridsearch():
     using Grid Search to find the optimum parameters that will maximize the recall score,
     """
 
-    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=0.01, random_state=3 )
+    X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1.0, random_state=3 )
 
     clf = LogisticRegression(random_state=4, solver="liblinear")
 
