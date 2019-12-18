@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+
+## Importing needed packages
 from sklearn.preprocessing.data import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sb
