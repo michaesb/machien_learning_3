@@ -14,7 +14,7 @@ from scoring import scores
 
 def randomforest_gridsearch():
     """
-    This function retrieves the dataset and uses a random forest classifier for predicting 
+    This function retrieves the dataset and uses a random forest classifier for predicting
     credit card frauds. To maximize the recall score, we used a grid search method to optimize
     the parameters going into the random forest classifier.
     """
@@ -28,7 +28,7 @@ def randomforest_gridsearch():
     param_grid = {
         "criterion": ["gini","entropy"],
         "n_estimators" : [10, 100, 200],
-        "min_samples_split": [3, 5, 10], 
+        "min_samples_split": [3, 5, 10],
         "max_depth": [5, 15, 25],
         "max_features": [5, 10, 30],
         "min_samples_leaf": [1, 10, 20]
@@ -58,24 +58,21 @@ def randomforest_tuned():
     """
 
     X_train, X_test, y_train, y_test = retrieve_data( undersampling=True, ratio=1, random_state=None)
+    print("shape of X_train " +str(np.shape(X_train)))
+    print("shape of Y_train " +str(np.shape(y_train)))
+    print("shape of X_test " +str(np.shape(X_test)))
+    print("shape of Y_test " +str(np.shape(y_test)))
+    clf = RandomForestClassifier()
 
-    clf = RandomForestClassifier(
-                                max_depth = 15,
-                                max_features = 30,
-                                min_samples_split = 5, 
-                                n_estimators = 10,
-                                criterion = "gini",
-                                min_samples_leaf = 10,
-                                )
 
     clf.fit(X_train, y_train)
     prediction = clf.predict(X_test)
 
     scores(prediction, y_test, X_train, y_train)
-    
+
 
 
 ### Uncomment the function you'd like to run:
 
 randomforest_gridsearch()
-# randomforest_tuned()
+#randomforest_tuned()
